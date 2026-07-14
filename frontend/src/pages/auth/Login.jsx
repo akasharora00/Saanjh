@@ -21,14 +21,15 @@ const Login = () => {
       const res = await loginUser(formData);
       await checkAuth();
       const role = res.data.user.role;
+
       if (role === "student") {
-        navigate("/student/dashboard");
+        navigate("/student");
       }
       else if (role === "faculty") {
-        navigate("/faculty/dashboard");
+        navigate("/faculty");
       }
       else {
-        navigate("/admin/dashboard");
+        navigate("/admin");
       }
     } catch (error) {
       alert(error.response?.data?.message || "Login Failed");

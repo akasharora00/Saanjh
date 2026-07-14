@@ -3,46 +3,53 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "../pages/shared/Landing";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import NotFound from "../pages/shared/NotFound";
 
-import StudentDashboard from "../pages/student/Dashboard";
-import FacultyDashboard from "../pages/faculty/Dashboard";
-import AdminDashboard from "../pages/admin/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 
-import NotFound from "../pages/shared/NotFound";
+// Student Layout
+import StudentLayout from "../layouts/StudentLayout";
+
+// Student Pages
+import StudentDashboard from "../pages/student/Dashboard";
+import Notes from "../pages/student/Notes";
+import Events from "../pages/student/Events";
+import Profile from "../pages/student/Profile";
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
+
+        {/* ================= PUBLIC ROUTES ================= */}
+
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        {/* ================= STUDENT ROUTES ================= */}
+
         <Route
-            path="/student/dashboard"
-            element={
-                <ProtectedRoute allowedRoles={["student"]}>
-                    <StudentDashboard />
-                </ProtectedRoute>
-            }
-        />
-        <Route
-          path="/faculty/dashboard"
+          path="/student"
           element={
-            <ProtectedRoute allowedRoles={["faculty"]}>
-              <FacultyDashboard />
+            <ProtectedRoute allowedRoles={["student"]}>
+              <StudentLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/admin/dashboard"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
+        >
+          {/* Dashboard */}
+          <Route index element={<StudentDashboard />} />
+
+          {/* Student Modules */}
+          <Route path="notes" element={<Notes />} />
+          <Route path="events" element={<Events />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
+
+        {/* ================= 404 PAGE ================= */}
+
         <Route path="*" element={<NotFound />} />
+
       </Routes>
     </BrowserRouter>
   );
