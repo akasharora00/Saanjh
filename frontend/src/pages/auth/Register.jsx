@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 import { registerUser } from "../../api/authApi";
 import { useAuth } from "../../context/AuthContext";
-
+import { useEffect } from "react";
 const Register = () => {
   const navigate = useNavigate();
-  const { checkAuth } = useAuth();
+  const { checkAuth, user } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -16,6 +16,18 @@ const Register = () => {
     department: "",
     semester: "",
   });
+
+  useEffect(() => {
+    if (!user) return;
+
+    if (user.role === "student") {
+      navigate("/student");
+    } else if (user.role === "faculty") {
+      navigate("/faculty");
+    } else {
+      navigate("/admin");
+    }
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -28,16 +40,13 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      // Register User
       await registerUser(formData);
 
-      // Update Auth Context
       await checkAuth();
 
       alert("Registration Successful");
 
-      // Redirect to Login
-      navigate("/login");
+      // No navigate here
     } catch (error) {
       alert(error.response?.data?.message || "Registration Failed");
     }

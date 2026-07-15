@@ -1,4 +1,9 @@
+import React from "react";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   return (
     <nav
       style={{
@@ -13,7 +18,15 @@ const Navbar = () => {
     >
       <h2>Saanjh</h2>
 
-      <p>Welcome Student 👋</p>
+      <h3>Welcome {user?.name} 👋</h3>
+      <button
+        onClick={async () => {
+          await logout();
+          navigate("/login");
+        }}
+      >
+        Logout
+      </button>
     </nav>
   );
 };
