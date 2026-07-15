@@ -1,34 +1,19 @@
 import { Outlet } from "react-router-dom";
-
 import Navbar from "../components/layout/Navbar";
 import Sidebar from "../components/layout/Sidebar";
 
 const StudentLayout = () => {
   return (
-    <div>
-
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
       <Navbar />
-
-      <div
-        style={{
-          display: "flex",
-        }}
-      >
+      <div className="flex flex-1">
         <Sidebar />
-
-        <div
-          style={{
-            flex: 1,
-            padding: "20px",
-          }}
-        >
+        <main className="flex-1 p-8">
           <Outlet />
-        </div>
-
+        </main>
       </div>
-
     </div>
   );
 };
 
-export default StudentLayout;
+export default StudentLayout;

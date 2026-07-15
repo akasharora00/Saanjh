@@ -130,8 +130,11 @@ export const getCurrentUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
     try {
-
-        res.clearCookie("token");
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+        });
 
         res.status(200).json({
             message: "Logout Successful",
@@ -145,3 +148,4 @@ export const logoutUser = async (req, res) => {
         });
     }
 };
+
