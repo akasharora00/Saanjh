@@ -55,9 +55,9 @@ const Sidebar = () => {
   const links = menuItems[role] || [];
 
   return (
-    <aside className="w-64 bg-slate-900 border-r border-slate-800 text-white min-h-[calc(100vh-64px)] flex flex-col p-4 shadow-lg">
-      <div className="mb-6 px-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+    <aside className="w-64 bg-slate-950/20 border-r border-slate-900 text-slate-100 min-h-[calc(100vh-64px)] flex flex-col p-4 shadow-sm relative z-20">
+      <div className="mb-6 px-4 pt-2">
+        <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
           Menu ({role})
         </h3>
       </div>
@@ -70,11 +70,11 @@ const Sidebar = () => {
               to={item.path}
               end={item.end}
               className={({ isActive }) => `
-                flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-250 cursor-pointer
+                flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer
                 ${
                   isActive
-                    ? "bg-violet-600 text-white shadow-lg shadow-violet-500/25 border border-violet-500/30"
-                    : "text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent"
+                    ? "bg-gradient-to-r from-blue-600 to-violet-650 text-white shadow-lg shadow-blue-500/15 border border-blue-500/20"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800/40 border border-transparent"
                 }
               `}
             >

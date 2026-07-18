@@ -9,7 +9,7 @@ import Footer from "../../components/landing/Footer";
 
 const Landing = () => {
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-[#0F172A] text-slate-100 min-h-screen relative overflow-hidden">
       <Navbar />
       <Hero />
       <Universities />

@@ -18,21 +18,17 @@ const InputField = forwardRef(
     return (
       <div className="mb-5">
         {/* Label */}
-
-        <label className="block text-sm font-semibold text-slate-700 mb-2">
+        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
           {label}
         </label>
 
-        {/* Input */}
-
+        {/* Input Container */}
         <div className="relative">
-
           {/* Icon */}
-
           {Icon && (
             <Icon
               size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 transition-colors"
             />
           )}
 
@@ -49,22 +45,25 @@ const InputField = forwardRef(
               w-full
               rounded-xl
               border
-              border-gray-300
-              bg-white
+              border-slate-800/80
+              bg-slate-950/40
               py-3.5
               ${Icon ? "pl-11" : "pl-4"}
               pr-4
-              text-gray-700
-              placeholder:text-gray-400
+              text-slate-100
+              placeholder:text-slate-500
               outline-none
               transition-all
               duration-200
-              focus:border-violet-500
+              focus:border-blue-500
               focus:ring-4
-              focus:ring-violet-100
+              focus:ring-blue-500/10
+              disabled:opacity-50
+              disabled:cursor-not-allowed
+              text-sm
+              font-medium
             `}
           />
-
         </div>
       </div>
     );

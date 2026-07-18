@@ -64,3 +64,9 @@ Generate JWT
 Send Cookie
     ↓
 Response
+
+
+# multer : 
+Multer is a Node.js middleware used with Express.js to handle file uploads from the client, such as images, PDFs, videos, or documents.
+
+Normally, express.json() can only handle JSON data. If a user uploads a file, the request is sent as multipart/form-data, which Express cannot process by itself. Multer parses this data and makes the uploaded files available in your backend.

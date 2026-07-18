@@ -149,3 +149,52 @@ export const logoutUser = async (req, res) => {
     }
 };
 
+export const updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    // Update fields
+    user.name = req.body.name || user.name;
+    user.phone = req.body.phone !== undefined ? req.body.phone : user.phone;
+    user.department = req.body.department || user.department;
+    
+    if (user.role === "student") {
+      user.semester = req.body.semester !== undefined ? Number(req.body.semester) : user.semester;
+    }
+
+    // Update password if provided
+    if (req.body.password) {
+      if (req.body.password.length < 6) {
+        return res.status(400).json({
+          message: "Password must be at least 6 characters long",
+        });
+      }
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      user.password = hashedPassword;
+    }
+
+    // Save profile picture file url if present
+    if (req.file) {
+      user.profilePic = req.file.path.replace(/\\/g, "/");
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user,
+    });
+  } catch (error) {
+    console.error("Update Profile Error:", error);
+    res.status(500).json({
+      message: "Server Error",
+    });
+  }
+};
+

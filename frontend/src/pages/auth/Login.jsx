@@ -65,9 +65,9 @@ const Login = () => {
       title="Welcome back"
       subtitle="Log in to your Saanjh account to continue."
     >
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="flex items-center gap-3 bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3.5 rounded-xl text-sm font-medium animate-fadeIn">
+          <div className="flex items-center gap-3 bg-rose-500/10 border border-rose-550/20 text-rose-400 px-4 py-3.5 rounded-xl text-sm font-semibold animate-fadeIn">
             <AlertCircle size={18} className="shrink-0" />
             <span>{error}</span>
           </div>
@@ -93,20 +93,20 @@ const Login = () => {
 
         {/* Remember + Forgot */}
         <div className="flex items-center justify-between text-sm">
-          <label className="flex items-center gap-2 text-slate-600 cursor-pointer select-none">
+          <label className="flex items-center gap-2 text-slate-400 cursor-pointer select-none">
             <input
               type="checkbox"
               name="remember"
               checked={formData.remember}
               onChange={handleChange}
-              className="w-4 h-4 accent-violet-600 cursor-pointer"
+              className="w-4 h-4 accent-blue-500 rounded border-slate-700 bg-slate-900 cursor-pointer"
             />
             Remember me
           </label>
 
           <button
             type="button"
-            className="text-violet-600 hover:text-violet-750 font-semibold transition"
+            className="text-blue-500 hover:text-blue-400 font-bold transition-colors cursor-pointer"
           >
             Forgot password?
           </button>
@@ -116,7 +116,7 @@ const Login = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 rounded-xl bg-violet-600 hover:bg-violet-750 text-white font-semibold shadow-lg shadow-violet-500/20 hover:shadow-violet-600/30 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+          className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white font-bold shadow-lg shadow-blue-500/25 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer text-sm hover:scale-[1.02] active:scale-[0.98]"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
@@ -130,36 +130,36 @@ const Login = () => {
 
         {/* Divider */}
         <div className="flex items-center gap-4 py-2">
-          <div className="flex-1 h-px bg-slate-200"></div>
-          <span className="text-xs text-slate-400 font-medium uppercase tracking-wider">
+          <div className="flex-1 h-px bg-slate-800"></div>
+          <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">
             or continue with
           </span>
-          <div className="flex-1 h-px bg-slate-200"></div>
+          <div className="flex-1 h-px bg-slate-800"></div>
         </div>
 
         {/* Social Buttons */}
         <div className="grid grid-cols-2 gap-4">
           <button
             type="button"
-            className="border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-xl py-3 font-medium transition cursor-pointer flex items-center justify-center gap-2 text-slate-700 text-sm"
+            className="border border-slate-800 bg-slate-950/20 hover:bg-slate-900/60 rounded-xl py-3 font-semibold transition cursor-pointer flex items-center justify-center gap-2 text-slate-350 hover:text-white text-sm"
           >
             Google
           </button>
 
           <button
             type="button"
-            className="border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-xl py-3 font-medium transition cursor-pointer flex items-center justify-center gap-2 text-slate-700 text-sm"
+            className="border border-slate-800 bg-slate-950/20 hover:bg-slate-900/60 rounded-xl py-3 font-semibold transition cursor-pointer flex items-center justify-center gap-2 text-slate-350 hover:text-white text-sm"
           >
             Microsoft
           </button>
         </div>
 
-        {/* Register */}
-        <p className="text-center text-sm text-slate-550 pt-2">
+        {/* Register link */}
+        <p className="text-center text-sm text-slate-400 pt-2">
           No account?{" "}
           <Link
             to="/register"
-            className="text-violet-600 font-bold hover:underline"
+            className="text-blue-500 font-bold hover:text-blue-400 transition-colors"
           >
             Create one free
           </Link>

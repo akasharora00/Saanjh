@@ -29,9 +29,10 @@ const userSchema = new mongoose.Schema(
     },
 
     department: {
-        type: String,
-        required: true,
-        trim: true,
+      type: String,
+      enum: ["CSE", "BCA", "Nursing", "Pharmacy"],
+      required: [true, "Department is required"],
+      trim: true,
     },
 
     semester: {
@@ -63,7 +64,7 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const User = mongoose.model("User", userSchema);

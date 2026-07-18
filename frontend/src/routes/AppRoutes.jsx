@@ -26,17 +26,21 @@ import MyNotes from "../pages/faculty/MyNotes";
 import FacultyEvents from "../pages/faculty/Events";
 import FacultyProfile from "../pages/faculty/Profile";
 
+import PageTransition from "../components/common/PageTransition";
+
 const AppRoutes = () => {
   return (
     <Routes>
       {/* ================= PUBLIC ROUTES ================= */}
-      <Route path="/" element={<Landing />} />
+      <Route path="/" element={<PageTransition><Landing /></PageTransition>} />
 
       <Route
         path="/login"
         element={
           <PublicRoute>
-            <Login />
+            <PageTransition>
+              <Login />
+            </PageTransition>
           </PublicRoute>
         }
       />
@@ -45,7 +49,9 @@ const AppRoutes = () => {
         path="/register"
         element={
           <PublicRoute>
-            <Register />
+            <PageTransition>
+              <Register />
+            </PageTransition>
           </PublicRoute>
         }
       />
@@ -59,10 +65,10 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route index element={<StudentDashboard />} />
-        <Route path="notes" element={<Notes />} />
-        <Route path="events" element={<Events />} />
-        <Route path="profile" element={<Profile />} />
+        <Route index element={<PageTransition><StudentDashboard /></PageTransition>} />
+        <Route path="notes" element={<PageTransition><Notes /></PageTransition>} />
+        <Route path="events" element={<PageTransition><Events /></PageTransition>} />
+        <Route path="profile" element={<PageTransition><Profile /></PageTransition>} />
       </Route>
 
       {/* ================= FACULTY ROUTES ================= */}
@@ -74,11 +80,11 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route index element={<FacultyDashboard />} />
-        <Route path="upload-notes" element={<UploadNotes />} />
-        <Route path="my-notes" element={<MyNotes />} />
-        <Route path="events" element={<FacultyEvents />} />
-        <Route path="profile" element={<FacultyProfile />} />
+        <Route index element={<PageTransition><FacultyDashboard /></PageTransition>} />
+        <Route path="upload-notes" element={<PageTransition><UploadNotes /></PageTransition>} />
+        <Route path="my-notes" element={<PageTransition><MyNotes /></PageTransition>} />
+        <Route path="events" element={<PageTransition><FacultyEvents /></PageTransition>} />
+        <Route path="profile" element={<PageTransition><FacultyProfile /></PageTransition>} />
       </Route>
 
       {/* ================= ADMIN ROUTES ================= */}
@@ -90,11 +96,11 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route index element={<AdminDashboard />} />
+        <Route index element={<PageTransition><AdminDashboard /></PageTransition>} />
       </Route>
 
       {/* ================= 404 PAGE ================= */}
-      <Route path="*" element={<NotFound />} />
+      <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
     </Routes>
   );
 };

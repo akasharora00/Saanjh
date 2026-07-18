@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import AuthLayout from "../../components/auth/AuthLayout";
 import InputField from "../../components/auth/InputField";
 import PasswordInput from "../../components/auth/PasswordInput";
+import { DEPARTMENTS } from "../../constants/departments";
 
 const Register = () => {
   const { register } = useAuth();
@@ -68,7 +69,7 @@ const Register = () => {
 
     try {
       setLoading(true);
-      
+
       // Construct registration payload
       const registerPayload = {
         name: formData.name,
@@ -86,7 +87,9 @@ const Register = () => {
       await register(registerPayload);
       // Success auto-login and redirect is handled in context
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed. Please try again.");
+      setError(
+        err.response?.data?.message || "Registration failed. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -97,9 +100,9 @@ const Register = () => {
       title="Create your account"
       subtitle="Join thousands of students and faculty on Saanjh."
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
-          <div className="flex items-center gap-3 bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-xl text-sm font-medium animate-fadeIn">
+          <div className="flex items-center gap-3 bg-rose-500/10 border border-rose-550/20 text-rose-400 px-4 py-3 rounded-xl text-sm font-semibold animate-fadeIn">
             <AlertCircle size={18} className="shrink-0" />
             <span>{error}</span>
           </div>
@@ -126,20 +129,20 @@ const Register = () => {
 
         {/* Role Selection */}
         <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-2">
+          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
             I am registering as a
           </label>
-          <div className="grid grid-cols-3 rounded-xl border border-slate-200 overflow-hidden bg-slate-50">
+          <div className="grid grid-cols-3 rounded-xl border border-slate-800 bg-slate-950/40 p-1">
             <button
               type="button"
               onClick={() => {
                 setRole("student");
                 setError("");
               }}
-              className={`py-2.5 font-semibold text-sm transition cursor-pointer ${
+              className={`py-2 font-bold text-xs uppercase tracking-wider rounded-lg transition cursor-pointer ${
                 role === "student"
-                  ? "bg-violet-600 text-white shadow-md shadow-violet-500/15"
-                  : "hover:bg-slate-100 text-slate-600"
+                  ? "bg-gradient-to-tr from-blue-600 to-violet-650 text-white shadow-md shadow-blue-500/15"
+                  : "hover:bg-slate-900/60 text-slate-400"
               }`}
             >
               Student
@@ -150,10 +153,10 @@ const Register = () => {
                 setRole("faculty");
                 setError("");
               }}
-              className={`py-2.5 font-semibold text-sm transition cursor-pointer ${
+              className={`py-2 font-bold text-xs uppercase tracking-wider rounded-lg transition cursor-pointer ${
                 role === "faculty"
-                  ? "bg-violet-600 text-white shadow-md shadow-violet-500/15"
-                  : "hover:bg-slate-100 text-slate-600"
+                  ? "bg-gradient-to-tr from-blue-600 to-violet-655 text-white shadow-md shadow-blue-500/15"
+                  : "hover:bg-slate-900/60 text-slate-400"
               }`}
             >
               Faculty
@@ -164,10 +167,10 @@ const Register = () => {
                 setRole("admin");
                 setError("");
               }}
-              className={`py-2.5 font-semibold text-sm transition cursor-pointer ${
+              className={`py-2 font-bold text-xs uppercase tracking-wider rounded-lg transition cursor-pointer ${
                 role === "admin"
-                  ? "bg-violet-600 text-white shadow-md shadow-violet-500/15"
-                  : "hover:bg-slate-100 text-slate-600"
+                  ? "bg-gradient-to-tr from-blue-600 to-violet-655 text-white shadow-md shadow-blue-500/15"
+                  : "hover:bg-slate-900/60 text-slate-400"
               }`}
             >
               Admin
@@ -177,41 +180,39 @@ const Register = () => {
 
         {/* Department */}
         <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-2">
+          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
             Department / Program
           </label>
           <select
             name="department"
             value={formData.department}
             onChange={handleChange}
-            className="w-full border border-slate-350 bg-white rounded-xl p-3 text-slate-700 outline-none transition focus:border-violet-500 focus:ring-4 focus:ring-violet-100 cursor-pointer text-sm"
+            className="w-full border border-slate-800 bg-slate-950/40 rounded-xl p-3 text-slate-200 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 cursor-pointer text-sm font-semibold"
           >
-            <option value="">Select Department</option>
-            <option value="Computer Science & Engineering">Computer Science & Engineering</option>
-            <option value="Information Technology">Information Technology</option>
-            <option value="Mechanical Engineering">Mechanical Engineering</option>
-            <option value="Civil Engineering">Civil Engineering</option>
-            <option value="Electrical Engineering">Electrical Engineering</option>
-            <option value="Business Administration">Business Administration</option>
-            <option value="Law">Law</option>
+            <option value="" className="bg-[#0F172A]">Select Department</option>
+            {DEPARTMENTS.map((dept) => (
+              <option key={dept.value} value={dept.value} className="bg-[#0F172A]">
+                {dept.label}
+              </option>
+            ))}
           </select>
         </div>
 
         {/* Semester (Conditional for Student) */}
         {role === "student" && (
           <div className="animate-fadeIn">
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Current Semester
             </label>
             <select
               name="semester"
               value={formData.semester}
               onChange={handleChange}
-              className="w-full border border-slate-350 bg-white rounded-xl p-3 text-slate-700 outline-none transition focus:border-violet-500 focus:ring-4 focus:ring-violet-100 cursor-pointer text-sm"
+              className="w-full border border-slate-800 bg-slate-950/40 rounded-xl p-3 text-slate-200 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 cursor-pointer text-sm font-semibold"
             >
-              <option value="">Select Semester</option>
+              <option value="" className="bg-[#0F172A]">Select Semester</option>
               {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
-                <option key={sem} value={sem}>
+                <option key={sem} value={sem} className="bg-[#0F172A]">
                   Semester {sem}
                 </option>
               ))}
@@ -236,21 +237,27 @@ const Register = () => {
         />
 
         {/* Terms checkbox */}
-        <label className="flex items-start gap-3 text-xs text-slate-600 cursor-pointer select-none">
+        <label className="flex items-start gap-3 text-xs text-slate-455 cursor-pointer select-none">
           <input
             type="checkbox"
             name="agree"
             checked={formData.agree}
             onChange={handleChange}
-            className="mt-1 w-4 h-4 accent-violet-600 cursor-pointer"
+            className="mt-1 w-4 h-4 accent-blue-500 rounded border-slate-700 bg-slate-900 cursor-pointer"
           />
           <span>
             I agree to the{" "}
-            <a href="#" className="text-violet-600 font-semibold hover:underline">
+            <a
+              href="#"
+              className="text-blue-550 font-bold hover:underline"
+            >
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="#" className="text-violet-600 font-semibold hover:underline">
+            <a
+              href="#"
+              className="text-blue-550 font-bold hover:underline"
+            >
               Privacy Policy
             </a>
           </span>
@@ -259,7 +266,7 @@ const Register = () => {
         {/* Register Button */}
         <button
           disabled={loading}
-          className="w-full py-3.5 rounded-xl bg-violet-600 hover:bg-violet-755 text-white font-semibold shadow-lg shadow-violet-500/20 hover:shadow-violet-650/30 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer text-sm"
+          className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white font-bold shadow-lg shadow-blue-500/25 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer text-sm hover:scale-[1.02] active:scale-[0.98]"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
@@ -271,11 +278,11 @@ const Register = () => {
           )}
         </button>
 
-        <p className="text-center text-sm text-slate-550 pt-1">
+        <p className="text-center text-sm text-slate-400 pt-1">
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-violet-600 font-bold hover:underline"
+            className="text-blue-500 font-bold hover:text-blue-400 transition-colors"
           >
             Log in
           </Link>

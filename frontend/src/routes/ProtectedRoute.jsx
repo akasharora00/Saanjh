@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import BrandedLoader from "../components/common/BrandedLoader";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
 
@@ -7,7 +8,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
     // Wait until authentication check finishes
     if (loading) {
-        return <h2>Loading...</h2>;
+        return <BrandedLoader />;
     }
 
     // User not logged in

@@ -15,3 +15,11 @@ export const getCurrentUser = () => {
 export const logoutUser = () => {
     return api.post("/auth/logout");
 };
+
+export const updateProfile = (formData) => {
+    return api.put("/auth/profile", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+};

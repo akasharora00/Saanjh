@@ -7,6 +7,7 @@ import authorize from "../middlewares/roleMiddleware.js";
 import {
   uploadNote,
   getAllNotes,
+  getMyNotes,
   getNoteById,
   updateNote,
   deleteNote,
@@ -20,6 +21,13 @@ router.post(
   authorize("faculty"),
   upload.single("pdf"),
   uploadNote
+);
+
+router.get(
+  "/my-notes",
+  protect,
+  authorize("faculty"),
+  getMyNotes
 );
 
 router.get("/", protect, getAllNotes);

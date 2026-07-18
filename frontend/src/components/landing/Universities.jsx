@@ -13,9 +13,9 @@ const universities = [
 
 const Universities = () => {
   return (
-    <section className="py-10 bg-slate-50/70 border-y border-slate-100 overflow-hidden">
+    <section className="py-12 bg-slate-950/20 border-y border-slate-800/50 overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-6">
-        <p className="text-center text-xs font-bold uppercase tracking-widest text-slate-400/80 mb-8">
+        <p className="text-center text-xs font-bold uppercase tracking-widest text-slate-400 mb-8">
           ⚡ Empowering Students across Top Universities & Colleges
         </p>
         
@@ -23,12 +23,12 @@ const Universities = () => {
           {universities.map((uni, idx) => (
             <div
               key={idx}
-              className="flex items-center gap-2.5 opacity-60 hover:opacity-100 transition-all duration-300 transform hover:scale-105 cursor-default group"
+              className="flex items-center gap-3 opacity-50 hover:opacity-90 hover:scale-105 transition-all duration-300 cursor-default group"
             >
-              <div className="w-9 h-9 rounded-lg bg-white shadow-sm flex items-center justify-center border border-slate-100 group-hover:shadow-md transition">
+              <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-750 flex items-center justify-center shadow-md group-hover:border-blue-500/50 group-hover:shadow-blue-500/10 transition-all duration-300">
                 <span className="text-lg">{uni.logo}</span>
               </div>
-              <span className="font-semibold text-slate-700 text-sm md:text-base">
+              <span className="font-bold text-slate-300 group-hover:text-white text-sm tracking-wide">
                 {uni.name}
               </span>
             </div>

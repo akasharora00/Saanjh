@@ -2,7 +2,6 @@ import Note from "../models/Note.js";
 
 export const uploadNote = async (req, res) => {
   try {
-
     const {
       title,
       subject,
@@ -24,7 +23,7 @@ export const uploadNote = async (req, res) => {
       department,
       semester,
       description,
-      fileUrl: req.file.path,
+      fileUrl: req.file.path.replace(/\\/g, "/"),
       uploadedBy: req.user._id,
     });
 
@@ -63,6 +62,33 @@ export const getAllNotes = async (req, res) => {
       success: false,
       message: "Server Error",
     });
+  }
+};
+
+export const getMyNotes = async (req, res) => {
+  try {
+
+    const notes = await Note.find({
+      uploadedBy: req.user._id,
+    })
+      .populate("uploadedBy", "name email")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: notes.length,
+      notes,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+
   }
 };
 
@@ -161,3 +187,4 @@ export const deleteNote = async (req, res) => {
 
   }
 };
+
