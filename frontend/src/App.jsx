@@ -6,7 +6,7 @@ import FloatingBackground from "./components/common/FloatingBackground";
 function App() {
   return (
     <>
-      <CustomCursor />
+      {/* <CustomCursor /> */}
       <FloatingBackground />
       <AppRoutes />
     </>

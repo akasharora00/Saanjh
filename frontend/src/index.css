@@ -99,8 +99,8 @@ body {
 }
 
 /* Hide default cursor on desktop hover devices for custom cursor support */
-@media (pointer: fine) {
+/* @media (pointer: fine) {
   body, a, button, input, select, textarea, [role="button"], .group, .glass-card {
     cursor: none !important;
   }
-}
+} */

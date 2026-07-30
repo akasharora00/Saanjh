@@ -3,6 +3,8 @@ import { Routes, Route } from "react-router-dom";
 import Landing from "../pages/shared/Landing";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import FacultyChangePassword from "../pages/auth/FacultyChangePassword";
 import NotFound from "../pages/shared/NotFound";
 
 import ProtectedRoute from "./ProtectedRoute";
@@ -21,6 +23,7 @@ import Profile from "../pages/student/Profile";
 
 import FacultyDashboard from "../pages/faculty/Dashboard";
 import AdminDashboard from "../pages/admin/Dashboard";
+import FacultyManagement from "../pages/admin/FacultyManagement";
 import UploadNotes from "../pages/faculty/UploadNotes";
 import MyNotes from "../pages/faculty/MyNotes";
 import FacultyEvents from "../pages/faculty/Events";
@@ -53,6 +56,29 @@ const AppRoutes = () => {
               <Register />
             </PageTransition>
           </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/forgot-password"
+        element={
+          <PublicRoute>
+            <PageTransition>
+              <ForgotPassword />
+            </PageTransition>
+          </PublicRoute>
+        }
+      />
+
+      {/* ================= FORCED FACULTY PASSWORD CHANGE ================= */}
+      <Route
+        path="/faculty/change-password"
+        element={
+          <ProtectedRoute allowedRoles={["faculty"]}>
+            <PageTransition>
+              <FacultyChangePassword />
+            </PageTransition>
+          </ProtectedRoute>
         }
       />
 
@@ -97,6 +123,10 @@ const AppRoutes = () => {
         }
       >
         <Route index element={<PageTransition><AdminDashboard /></PageTransition>} />
+        <Route path="faculty" element={<PageTransition><FacultyManagement /></PageTransition>} />
+        <Route path="students" element={<PageTransition><Notes /></PageTransition>} />
+        <Route path="notes" element={<PageTransition><Notes /></PageTransition>} />
+        <Route path="events" element={<PageTransition><FacultyEvents /></PageTransition>} />
       </Route>
 
       {/* ================= 404 PAGE ================= */}

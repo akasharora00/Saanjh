@@ -1,27 +1,33 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import BrandedLoader from "../components/common/BrandedLoader";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { user, loading } = useAuth();
+  const location = useLocation();
 
-    const { user, loading } = useAuth();
+  if (loading) {
+    return <BrandedLoader />;
+  }
 
-    // Wait until authentication check finishes
-    if (loading) {
-        return <BrandedLoader />;
-    }
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
-    // User not logged in
-    if (!user) {
-        return <Navigate to="/login" replace />;
-    }
+  // Force faculty to change password on first login
+  if (
+    user.role === "faculty" &&
+    user.mustChangePassword &&
+    location.pathname !== "/faculty/change-password"
+  ) {
+    return <Navigate to="/faculty/change-password" replace />;
+  }
 
-    // User logged in but doesn't have permission
-    if (!allowedRoles.includes(user.role)) {
-        return <Navigate to="/" replace />;
-    }
+  if (!allowedRoles.includes(user.role)) {
+    return <Navigate to="/" replace />;
+  }
 
-    return children;
+  return children;
 };
 
 export default ProtectedRoute;

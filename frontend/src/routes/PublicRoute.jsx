@@ -3,23 +3,25 @@ import { useAuth } from "../context/AuthContext";
 import BrandedLoader from "../components/common/BrandedLoader";
 
 const PublicRoute = ({ children }) => {
-    const { user, loading } = useAuth();
+  const { user, loading } = useAuth();
 
-    if (loading) {
-        return <BrandedLoader />;
+  if (loading) {
+    return <BrandedLoader />;
+  }
+
+  if (user) {
+    if (user.role === "faculty" && user.mustChangePassword) {
+      return <Navigate to="/faculty/change-password" replace />;
+    } else if (user.role === "admin") {
+      return <Navigate to="/admin" replace />;
+    } else if (user.role === "faculty") {
+      return <Navigate to="/faculty" replace />;
+    } else {
+      return <Navigate to="/student" replace />;
     }
+  }
 
-    if (user) {
-        if (user.role === "admin") {
-            return <Navigate to="/admin" replace />;
-        } else if (user.role === "faculty") {
-            return <Navigate to="/faculty" replace />;
-        } else {
-            return <Navigate to="/student" replace />;
-        }
-    }
-
-    return children;
+  return children;
 };
 
 export default PublicRoute;

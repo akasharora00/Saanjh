@@ -1,83 +1,188 @@
 import bcrypt from "bcryptjs";
-import User from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
+import User from "../models/User.js";
+import generateOTP from "../utils/generateOTP.js";
+import { sendOTPEmail, sendFacultyCredentialsEmail } from "../services/emailService.js";
 
-export const registerUser = async (req, res) => {
+export const sendOTP = async (req, res) => {
   try {
-    // Get data from frontend
-    const { name, email, password, role, department, semester, phone } = req.body;
+    const { email } = req.body;
 
-    // Check if all required fields are present
-    if (!name || !email || !password || !department) {
+    if (!email) {
+      return res.status(400).json({
+        message: "Email is required",
+      });
+    }
+
+    if (!email.endsWith("@chitkarauniversity.edu.in")) {
+      return res.status(400).json({
+        message: "Only Chitkara University email is allowed",
+      });
+    }
+
+    const otp = generateOTP();
+    const otpHash = await bcrypt.hash(otp, 10);
+    const otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
+
+    let user = await User.findOne({ email });
+
+    if (user) {
+      user.otpHash = otpHash;
+      user.otpExpiry = otpExpiry;
+      user.isVerified = false;
+    } else {
+      user = new User({
+        name: "Temp User",
+        email,
+        password: "Temp@123",
+        role: "student",
+        department: "CSE",
+        semester: 1,
+        phone: "",
+        isVerified: false,
+        otpHash,
+        otpExpiry,
+      });
+    }
+
+    await user.save();
+    await sendOTPEmail(email, otp);
+
+    return res.status(200).json({
+      message: "OTP sent successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const verifyOTP = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      return res.status(400).json({
+        message: "Email and OTP are required",
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "Please request OTP first",
+      });
+    }
+
+    if (!user.otpExpiry || user.otpExpiry < new Date()) {
+      return res.status(400).json({
+        message: "OTP has expired",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(otp, user.otpHash);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Invalid OTP",
+      });
+    }
+
+    user.isVerified = true;
+    user.otpHash = undefined;
+    user.otpExpiry = undefined;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "OTP verified successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const register = async (req, res) => {
+  try {
+    const { name, email, password, department, semester, phone } = req.body;
+
+    if (!name || !email || !password || !department || !semester) {
       return res.status(400).json({
         message: "Please fill all required fields",
       });
     }
 
-    // Check whether user already exists
-    const existingUser = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-    if (existingUser) {
-      return res.status(400).json({
-        message: "User already exists",
+    if (!user) {
+      return res.status(404).json({
+        message: "Please verify your email first",
       });
     }
 
-    // Encrypt password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    if (!user.isVerified) {
+      return res.status(400).json({
+        message: "Please verify your email first",
+      });
+    }
 
-    // Save user in database
-    const user = new User({
-      name,
-      email,
-      password: hashedPassword,
-      role,
-      department,
-      semester,
-      phone,
-    });
+    if (user.name !== "Temp User") {
+      return res.status(400).json({
+        message: "Account already exists",
+      });
+    }
+
+    user.name = name;
+    user.password = password; // pre-save hook will hash cleanly
+    user.department = department;
+    user.semester = Number(semester);
+    user.phone = phone || "";
+    user.role = "student";
 
     await user.save();
 
-    // Generate JWT Token
     const token = generateToken(user._id);
 
-    // Store token in cookie
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
     });
 
-    // Send response
-    res.status(201).json({
+    const userObj = user.toObject();
+    delete userObj.password;
+    delete userObj.otpHash;
+
+    return res.status(201).json({
       message: "Registration Successful",
-      user,
+      user: userObj,
     });
-
   } catch (error) {
-    console.log(error);
-
-    res.status(500).json({
-      message: "Server Error",
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
     });
   }
 };
 
+export const registerUser = register;
+
 export const loginUser = async (req, res) => {
   try {
-
-    // Step 1 : Get Data
     const { email, password } = req.body;
 
-    // Step 2 : Check Empty Fields
     if (!email || !password) {
       return res.status(400).json({
         message: "Please fill all fields",
       });
     }
 
-    // Step 3 : Find User
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -86,8 +191,13 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    // Step 4 : Compare Password
-    const isMatch = await bcrypt.compare(password, user.password);
+    if (user.role === "student" && !user.isVerified) {
+      return res.status(400).json({
+        message: "Please verify your email first",
+      });
+    }
+
+    const isMatch = await user.comparePassword(password);
 
     if (!isMatch) {
       return res.status(400).json({
@@ -95,58 +205,264 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    // Step 5 : Generate Token
     const token = generateToken(user._id);
 
-    // Step 6 : Store Cookie
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
     });
 
-    // Step 7 : Response
-    res.status(200).json({
+    const userObj = user.toObject();
+    delete userObj.password;
+    delete userObj.otpHash;
+
+    return res.status(200).json({
       message: "Login Successful",
-      user,
+      user: userObj,
     });
-
   } catch (error) {
-    console.log(error);
-
-    res.status(500).json({
+    console.error(error);
+    return res.status(500).json({
       message: "Server Error",
     });
   }
 };
 
 export const getCurrentUser = async (req, res) => {
-
-    res.status(200).json({
-        user: req.user,
-    });
-
+  const userObj = req.user ? req.user.toObject() : null;
+  if (userObj) {
+    delete userObj.password;
+    delete userObj.otpHash;
+  }
+  res.status(200).json({
+    user: userObj,
+  });
 };
 
 export const logoutUser = async (req, res) => {
-    try {
-        res.clearCookie("token", {
-            httpOnly: true,
-            secure: false,
-            sameSite: "lax",
-        });
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
 
-        res.status(200).json({
-            message: "Logout Successful",
-        });
+    return res.status(200).json({
+      message: "Logout Successful",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Server Error",
+    });
+  }
+};
 
-    } catch (error) {
-        console.log(error);
-
-        res.status(500).json({
-            message: "Server Error",
-        });
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "Please fill all fields" });
     }
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: "New password must be at least 6 characters long" });
+    }
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const isMatch = await user.comparePassword(currentPassword);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid temporary or current password" });
+    }
+    user.password = newPassword;
+    user.mustChangePassword = false;
+    await user.save();
+
+    const userObj = user.toObject();
+    delete userObj.password;
+    delete userObj.otpHash;
+
+    return res.status(200).json({
+      message: "Password changed successfully",
+      user: userObj,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// ================= FORGOT PASSWORD WORKFLOW ================= //
+
+export const forgotPasswordSendOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "No registered account found with this email" });
+    }
+
+    const otp = generateOTP();
+    const otpHash = await bcrypt.hash(otp, 10);
+    const otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
+
+    user.otpHash = otpHash;
+    user.otpExpiry = otpExpiry;
+    await user.save();
+
+    await sendOTPEmail(email, otp);
+
+    return res.status(200).json({
+      message: "Password reset OTP sent to your email successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const forgotPasswordVerifyOTP = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Email and OTP are required" });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.otpExpiry || user.otpExpiry < new Date()) {
+      return res.status(400).json({ message: "OTP has expired" });
+    }
+
+    const isMatch = await bcrypt.compare(otp, user.otpHash);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    return res.status(200).json({
+      message: "OTP verified successfully. You can now reset your password.",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const forgotPasswordReset = async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({ message: "Email, OTP and new password are required" });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters long" });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.otpExpiry || user.otpExpiry < new Date()) {
+      return res.status(400).json({ message: "OTP session expired. Please request a new OTP." });
+    }
+
+    const isMatch = await bcrypt.compare(otp, user.otpHash);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid OTP code" });
+    }
+
+    user.password = newPassword; // pre-save hook will hash
+    user.otpHash = undefined;
+    user.otpExpiry = undefined;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Password reset successful. Please log in with your new password.",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const createFaculty = async (req, res) => {
+  try {
+    const { name, email, department } = req.body;
+    if (!name || !email || !department) {
+      return res.status(400).json({ message: "Name, email, and department are required" });
+    }
+    if (!email.endsWith("@chitkarauniversity.edu.in")) {
+      return res.status(400).json({ message: "Only Chitkara University email is allowed" });
+    }
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User with this email already exists" });
+    }
+    const tempPassword = `Faculty@${Math.floor(1000 + Math.random() * 9000)}`;
+    const faculty = new User({
+      name,
+      email,
+      password: tempPassword,
+      role: "faculty",
+      department,
+      isVerified: true,
+      mustChangePassword: true,
+    });
+    await faculty.save();
+
+    try {
+      await sendFacultyCredentialsEmail(email, tempPassword);
+    } catch (emailErr) {
+      console.error("Failed to send faculty email:", emailErr);
+    }
+
+    return res.status(201).json({
+      message: "Faculty created successfully.",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const getFaculties = async (req, res) => {
+  try {
+    const faculties = await User.find({ role: "faculty" }).select("-password -otpHash");
+    return res.status(200).json({ faculties });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const getStudents = async (req, res) => {
+  try {
+    const students = await User.find({ role: "student" }).select("-password -otpHash");
+    return res.status(200).json({ students });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server Error" });
+  }
 };
 
 export const updateProfile = async (req, res) => {
@@ -163,9 +479,12 @@ export const updateProfile = async (req, res) => {
     user.name = req.body.name || user.name;
     user.phone = req.body.phone !== undefined ? req.body.phone : user.phone;
     user.department = req.body.department || user.department;
-    
+
     if (user.role === "student") {
-      user.semester = req.body.semester !== undefined ? Number(req.body.semester) : user.semester;
+      user.semester =
+        req.body.semester !== undefined ?
+        Number(req.body.semester) :
+        user.semester;
     }
 
     // Update password if provided
@@ -175,8 +494,7 @@ export const updateProfile = async (req, res) => {
           message: "Password must be at least 6 characters long",
         });
       }
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      user.password = hashedPassword;
+      user.password = req.body.password;
     }
 
     // Save profile picture file url if present
@@ -186,9 +504,13 @@ export const updateProfile = async (req, res) => {
 
     await user.save();
 
+    const userObj = user.toObject();
+    delete userObj.password;
+    delete userObj.otpHash;
+
     res.status(200).json({
       message: "Profile updated successfully",
-      user,
+      user: userObj,
     });
   } catch (error) {
     console.error("Update Profile Error:", error);
@@ -197,4 +519,3 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
-
