@@ -24,10 +24,15 @@ import Profile from "../pages/student/Profile";
 import FacultyDashboard from "../pages/faculty/Dashboard";
 import AdminDashboard from "../pages/admin/Dashboard";
 import FacultyManagement from "../pages/admin/FacultyManagement";
+import StudentManagement from "../pages/admin/StudentManagement";
 import UploadNotes from "../pages/faculty/UploadNotes";
 import MyNotes from "../pages/faculty/MyNotes";
 import FacultyEvents from "../pages/faculty/Events";
 import FacultyProfile from "../pages/faculty/Profile";
+
+import LostFoundList from "../pages/LostFound/LostFoundList";
+import ReportItem from "../pages/LostFound/ReportItem";
+import ItemDetails from "../pages/LostFound/ItemDetails";
 
 import PageTransition from "../components/common/PageTransition";
 
@@ -94,6 +99,9 @@ const AppRoutes = () => {
         <Route index element={<PageTransition><StudentDashboard /></PageTransition>} />
         <Route path="notes" element={<PageTransition><Notes /></PageTransition>} />
         <Route path="events" element={<PageTransition><Events /></PageTransition>} />
+        <Route path="lost-found" element={<PageTransition><LostFoundList /></PageTransition>} />
+        <Route path="lost-found/report" element={<PageTransition><ReportItem /></PageTransition>} />
+        <Route path="lost-found/:id" element={<PageTransition><ItemDetails /></PageTransition>} />
         <Route path="profile" element={<PageTransition><Profile /></PageTransition>} />
       </Route>
 
@@ -110,6 +118,9 @@ const AppRoutes = () => {
         <Route path="upload-notes" element={<PageTransition><UploadNotes /></PageTransition>} />
         <Route path="my-notes" element={<PageTransition><MyNotes /></PageTransition>} />
         <Route path="events" element={<PageTransition><FacultyEvents /></PageTransition>} />
+        <Route path="lost-found" element={<PageTransition><LostFoundList /></PageTransition>} />
+        <Route path="lost-found/report" element={<PageTransition><ReportItem /></PageTransition>} />
+        <Route path="lost-found/:id" element={<PageTransition><ItemDetails /></PageTransition>} />
         <Route path="profile" element={<PageTransition><FacultyProfile /></PageTransition>} />
       </Route>
 
@@ -124,9 +135,11 @@ const AppRoutes = () => {
       >
         <Route index element={<PageTransition><AdminDashboard /></PageTransition>} />
         <Route path="faculty" element={<PageTransition><FacultyManagement /></PageTransition>} />
-        <Route path="students" element={<PageTransition><Notes /></PageTransition>} />
+        <Route path="students" element={<PageTransition><StudentManagement /></PageTransition>} />
         <Route path="notes" element={<PageTransition><Notes /></PageTransition>} />
         <Route path="events" element={<PageTransition><FacultyEvents /></PageTransition>} />
+        <Route path="lost-found" element={<PageTransition><LostFoundList /></PageTransition>} />
+        <Route path="lost-found/:id" element={<PageTransition><ItemDetails /></PageTransition>} />
       </Route>
 
       {/* ================= 404 PAGE ================= */}

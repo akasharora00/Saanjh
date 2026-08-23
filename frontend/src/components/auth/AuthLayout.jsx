@@ -12,10 +12,10 @@ const AuthLayout = ({ title, subtitle, children }) => {
         <div className="relative flex flex-col justify-between h-full w-full p-16 z-10">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-violet-650 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-blue-500/25">
-              ⌘
+            <div className="w-12 h-12 rounded-2xl bg-[#0F172A] border border-slate-850/80 overflow-hidden flex items-center justify-center shadow-lg shadow-blue-500/10">
+              <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-white">Saanjh</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-white">UniSphere</h1>
           </div>
 
           {/* Core Branding */}
@@ -62,7 +62,7 @@ const AuthLayout = ({ title, subtitle, children }) => {
           </div>
 
           <p className="text-slate-500 text-sm">
-            © {new Date().getFullYear()} Saanjh Technologies.
+            © {new Date().getFullYear()} UniSphere Technologies.
           </p>
         </div>
       </div>

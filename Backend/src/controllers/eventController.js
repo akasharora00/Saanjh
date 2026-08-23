@@ -262,3 +262,71 @@ export const cancelRegistration = async (req, res) => {
     });
   }
 };
+
+export const updateEvent = async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found",
+      });
+    }
+
+    // Only the creator of the event or an admin can update it
+    if (
+      event.createdBy.toString() !== req.user._id.toString() &&
+      req.user.role !== "admin"
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
+    const {
+      title,
+      description,
+      category,
+      department,
+      venue,
+      date,
+      time,
+      registrationDeadline,
+      maxParticipants,
+    } = req.body;
+
+    event.title = title || event.title;
+    event.description = description || event.description;
+    event.category = category || event.category;
+    event.department = department || event.department;
+    event.venue = venue || event.venue;
+    event.date = date || event.date;
+    event.time = time || event.time;
+    event.registrationDeadline = registrationDeadline || event.registrationDeadline;
+    event.maxParticipants = maxParticipants !== undefined ? Number(maxParticipants) : event.maxParticipants;
+
+    if (req.files) {
+      if (req.files["poster"]) {
+        event.poster = req.files["poster"][0].path;
+      }
+      if (req.files["circular"]) {
+        event.circular = req.files["circular"][0].path;
+      }
+    }
+
+    await event.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Event updated successfully",
+      event,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

@@ -16,11 +16,11 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-violet-600 flex items-center justify-center shadow-lg shadow-blue-500/25 group-hover:scale-105 transition-transform duration-300">
-            <span className="text-white text-xl font-bold">⌘</span>
+          <div className="w-10 h-10 rounded-xl bg-[#0F172A] border border-slate-850/80 overflow-hidden flex items-center justify-center shadow-lg shadow-blue-500/10 group-hover:scale-105 transition-transform duration-300">
+            <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-white group-hover:text-blue-450 transition-colors">
-            Saanjh
+            UniSphere
           </h1>
         </Link>
 

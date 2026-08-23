@@ -10,6 +10,7 @@ import {
   getRegisteredStudents,
   deleteEvent,
   cancelRegistration,
+  updateEvent,
 } from "../controllers/eventController.js";
 
 const router = express.Router();
@@ -23,6 +24,17 @@ router.post(
     { name: "circular", maxCount: 1 },
   ]),
   createEvent
+);
+
+router.patch(
+  "/:id",
+  protect,
+  authorize("faculty", "admin"),
+  eventPosterUpload.fields([
+    { name: "poster", maxCount: 1 },
+    { name: "circular", maxCount: 1 },
+  ]),
+  updateEvent
 );
 
 router.get("/", protect, getAllEvents);

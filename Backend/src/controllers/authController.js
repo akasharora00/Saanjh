@@ -14,7 +14,9 @@ export const sendOTP = async (req, res) => {
       });
     }
 
-    if (!email.endsWith("@chitkarauniversity.edu.in")) {
+    const normalizedEmail = email.toLowerCase().trim();
+
+    if (!normalizedEmail.endsWith("@chitkarauniversity.edu.in")) {
       return res.status(400).json({
         message: "Only Chitkara University email is allowed",
       });
@@ -24,7 +26,7 @@ export const sendOTP = async (req, res) => {
     const otpHash = await bcrypt.hash(otp, 10);
     const otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
 
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email: normalizedEmail });
 
     if (user) {
       user.otpHash = otpHash;
@@ -33,7 +35,7 @@ export const sendOTP = async (req, res) => {
     } else {
       user = new User({
         name: "Temp User",
-        email,
+        email: normalizedEmail,
         password: "Temp@123",
         role: "student",
         department: "CSE",
@@ -46,7 +48,8 @@ export const sendOTP = async (req, res) => {
     }
 
     await user.save();
-    await sendOTPEmail(email, otp);
+    console.log(`[OTP Verification] Generated OTP for ${normalizedEmail}: ${otp}`);
+    await sendOTPEmail(normalizedEmail, otp);
 
     return res.status(200).json({
       message: "OTP sent successfully",
@@ -69,7 +72,8 @@ export const verifyOTP = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
 
     if (!user) {
       return res.status(404).json({
@@ -118,7 +122,8 @@ export const register = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
 
     if (!user) {
       return res.status(404).json({
@@ -183,7 +188,8 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
 
     if (!user) {
       return res.status(400).json({
@@ -304,7 +310,8 @@ export const forgotPasswordSendOTP = async (req, res) => {
       return res.status(400).json({ message: "Email is required" });
     }
 
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
 
     if (!user) {
       return res.status(404).json({ message: "No registered account found with this email" });
@@ -318,7 +325,8 @@ export const forgotPasswordSendOTP = async (req, res) => {
     user.otpExpiry = otpExpiry;
     await user.save();
 
-    await sendOTPEmail(email, otp);
+    console.log(`[Forgot Password OTP] Generated OTP for ${normalizedEmail}: ${otp}`);
+    await sendOTPEmail(normalizedEmail, otp);
 
     return res.status(200).json({
       message: "Password reset OTP sent to your email successfully",
@@ -337,7 +345,8 @@ export const forgotPasswordVerifyOTP = async (req, res) => {
       return res.status(400).json({ message: "Email and OTP are required" });
     }
 
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -374,7 +383,8 @@ export const forgotPasswordReset = async (req, res) => {
       return res.status(400).json({ message: "Password must be at least 6 characters long" });
     }
 
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -411,17 +421,18 @@ export const createFaculty = async (req, res) => {
     if (!name || !email || !department) {
       return res.status(400).json({ message: "Name, email, and department are required" });
     }
-    if (!email.endsWith("@chitkarauniversity.edu.in")) {
+    const normalizedEmail = email.toLowerCase().trim();
+    if (!normalizedEmail.endsWith("@chitkarauniversity.edu.in")) {
       return res.status(400).json({ message: "Only Chitkara University email is allowed" });
     }
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return res.status(400).json({ message: "User with this email already exists" });
     }
     const tempPassword = `Faculty@${Math.floor(1000 + Math.random() * 9000)}`;
     const faculty = new User({
       name,
-      email,
+      email: normalizedEmail,
       password: tempPassword,
       role: "faculty",
       department,
@@ -430,8 +441,10 @@ export const createFaculty = async (req, res) => {
     });
     await faculty.save();
 
+    console.log(`[Faculty Creation] Temporary credentials generated for ${normalizedEmail}. Temp password: ${tempPassword}`);
+
     try {
-      await sendFacultyCredentialsEmail(email, tempPassword);
+      await sendFacultyCredentialsEmail(normalizedEmail, tempPassword);
     } catch (emailErr) {
       console.error("Failed to send faculty email:", emailErr);
     }

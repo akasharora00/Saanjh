@@ -48,7 +48,7 @@ const Login = () => {
   return (
     <AuthLayout
       title="Welcome back"
-      subtitle="Log in to your Saanjh account to continue."
+      subtitle="Log in to your UniSphere account to continue."
     >
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (

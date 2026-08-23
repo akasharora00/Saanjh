@@ -5,12 +5,13 @@ import noteRoutes from "./routes/noteRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import path from "path";
 import eventRoutes from "./routes/eventRoutes.js";
+import lostFoundRoutes from "./routes/lostFoundRoutes.js";
 
 const app = express();
 
 // Middlewares
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "http://localhost:5174"],
     credentials: true,
 }));
 
@@ -24,6 +25,7 @@ app.use( "/uploads", express.static(path.join(process.cwd(), "uploads")) );
 
 
 app.use("/api/events", eventRoutes);
+app.use("/api/lost-found", lostFoundRoutes);
 app.use("/uploads", express.static("uploads"));
 
 // Global Error Handler

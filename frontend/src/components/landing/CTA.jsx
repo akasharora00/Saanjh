@@ -30,7 +30,7 @@ const CTA = () => {
             </h2>
 
             <p className="mt-6 text-base md:text-lg text-blue-100/90 leading-relaxed max-w-xl mx-auto">
-              Join thousands of students and faculty already using <span className="font-bold text-white">Saanjh</span> to stay connected, organized and academic-ready.
+              Join thousands of students and faculty already using <span className="font-bold text-white">UniSphere</span> to stay connected, organized and academic-ready.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">

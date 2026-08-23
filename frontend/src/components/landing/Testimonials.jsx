@@ -7,7 +7,7 @@ const testimonials = [
     name: "Aarav Sharma",
     role: "Computer Science Student",
     image: "https://randomuser.me/api/portraits/men/32.jpg",
-    review: "Saanjh has completely changed the way we access notes and university updates. Everything is available in one place.",
+    review: "UniSphere has completely changed the way we access notes and university updates. Everything is available in one place.",
   },
   {
     name: "Priya Verma",
@@ -39,7 +39,7 @@ const Testimonials = () => {
             Loved by Students & Faculty
           </h2>
           <p className="text-slate-400 mt-6 max-w-2xl mx-auto leading-relaxed">
-            See how Saanjh is improving academic collaboration and logistics across campus.
+            See how UniSphere is improving academic collaboration and logistics across campus.
           </p>
         </div>
 

@@ -17,7 +17,7 @@ const BrandedLoader = () => {
 
         {/* Text indicators */}
         <h2 className="mt-8 text-xl font-bold text-white tracking-wider animate-pulse">
-          Saanjh
+          UniSphere
         </h2>
         <p className="mt-2 text-sm text-slate-400 font-medium">
           Loading your campus experience...

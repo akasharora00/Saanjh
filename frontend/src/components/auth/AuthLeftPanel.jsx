@@ -40,7 +40,7 @@ const AuthLeftPanel = () => {
         </div>
 
         <h1 className="text-3xl font-bold">
-          Saanjh
+          UniSphere
         </h1>
 
       </div>
@@ -101,7 +101,7 @@ const AuthLeftPanel = () => {
 
       <div className="relative z-10 text-violet-200">
 
-        © {new Date().getFullYear()} Saanjh Technologies
+        © {new Date().getFullYear()} UniSphere Technologies
 
       </div>
 

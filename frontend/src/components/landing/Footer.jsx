@@ -8,11 +8,11 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-violet-650 flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-blue-500/25">
-                ⌘
+              <div className="w-10 h-10 rounded-xl bg-[#0F172A] border border-slate-850/80 overflow-hidden flex items-center justify-center shadow-lg shadow-blue-500/10">
+                <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
               </div>
               <h2 className="text-xl font-bold text-white tracking-tight">
-                Saanjh
+                UniSphere
               </h2>
             </div>
             <p className="mt-6 leading-relaxed text-sm text-slate-400">
@@ -63,7 +63,7 @@ const Footer = () => {
               Contact
             </h3>
             <div className="space-y-3 text-sm">
-              <p>📧 support@saanjh.com</p>
+              <p>📧 support@unisphere.com</p>
               <p>📞 +91 98765 43210</p>
               <p>📍 Chitkara University</p>
             </div>
@@ -84,7 +84,7 @@ const Footer = () => {
 
         <div className="border-t border-slate-850 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
           <p className="text-slate-500">
-            © {new Date().getFullYear()} Saanjh. All rights reserved.
+            © {new Date().getFullYear()} UniSphere. All rights reserved.
           </p>
 
           <div className="flex gap-6 font-semibold">

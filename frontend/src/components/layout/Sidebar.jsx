@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { LayoutDashboard, FileText, Calendar, UserCircle, Users, LogOut } from "lucide-react";
+import { LayoutDashboard, FileText, Calendar, UserCircle, Users, LogOut, Search } from "lucide-react";
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
@@ -17,6 +17,7 @@ const Sidebar = () => {
       },
       { path: "/student/notes", label: "Notes", icon: FileText },
       { path: "/student/events", label: "Events", icon: Calendar },
+      { path: "/student/lost-found", label: "Lost & Found", icon: Search },
       { path: "/student/profile", label: "Profile", icon: UserCircle },
     ],
     faculty: [
@@ -42,6 +43,11 @@ const Sidebar = () => {
         icon: Calendar,
       },
       {
+        path: "/faculty/lost-found",
+        label: "Lost & Found",
+        icon: Search,
+      },
+      {
         path: "/faculty/profile",
         label: "Profile",
         icon: UserCircle,
@@ -53,6 +59,7 @@ const Sidebar = () => {
       { path: "/admin/students", label: "Students", icon: Users },
       { path: "/admin/notes", label: "Notes", icon: FileText },
       { path: "/admin/events", label: "Events", icon: Calendar },
+      { path: "/admin/lost-found", label: "Lost & Found", icon: Search },
     ],
   };
 

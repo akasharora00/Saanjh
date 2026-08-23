@@ -131,6 +131,14 @@ export const updateNote = async (req, res) => {
       });
     }
 
+    // Security check: Only the creator of the note or an admin can update it
+    if (note.uploadedBy.toString() !== req.user._id.toString() && req.user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to edit this note.",
+      });
+    }
+
     note.title = req.body.title || note.title;
     note.subject = req.body.subject || note.subject;
     note.department = req.body.department || note.department;
@@ -166,6 +174,14 @@ export const deleteNote = async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Note not found",
+      });
+    }
+
+    // Security check: Only the creator of the note or an admin can delete it
+    if (note.uploadedBy.toString() !== req.user._id.toString() && req.user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to delete this note.",
       });
     }
 

@@ -70,7 +70,7 @@ const About = () => {
           >
             <div>
               <span className="text-blue-500 font-bold uppercase tracking-widest text-xs">
-                Why Saanjh
+                Why UniSphere
               </span>
               <h2 className="text-4xl md:text-5xl font-extrabold text-white mt-4 tracking-tight leading-[1.15]">
                 A complete digital
@@ -78,7 +78,7 @@ const About = () => {
                 campus ecosystem.
               </h2>
               <p className="text-slate-400 mt-6 leading-relaxed">
-                Saanjh brings together students, faculty and administration on one modern platform to improve communication, collaboration and campus engagement.
+                UniSphere brings together students, faculty and administration on one modern platform to improve communication, collaboration and campus engagement.
               </p>
             </div>
 

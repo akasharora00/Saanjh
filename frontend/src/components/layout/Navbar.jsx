@@ -9,11 +9,11 @@ const Navbar = () => {
     <nav className="h-16 bg-[#0F172A]/75 backdrop-blur-xl border-b border-slate-900 text-white flex items-center justify-between px-6 md:px-8 shadow-sm sticky top-0 z-50">
       {/* Brand Logo */}
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-violet-650 flex items-center justify-center font-bold text-base shadow-lg shadow-blue-500/20">
-          ⌘
+        <div className="w-8 h-8 rounded-lg bg-[#0F172A] border border-slate-850/80 overflow-hidden flex items-center justify-center shadow-lg shadow-blue-500/10">
+          <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
         </div>
         <h2 className="text-lg font-bold tracking-tight text-white">
-          Saanjh
+          UniSphere
         </h2>
       </div>
 
