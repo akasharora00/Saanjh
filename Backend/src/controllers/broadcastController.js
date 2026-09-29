@@ -1,5 +1,6 @@
 import BroadcastPost from "../models/BroadcastPost.js";
 import BroadcastComment from "../models/BroadcastComment.js";
+import { uploadToCloudinary } from "../utils/cloudinaryService.js";
 
 export const createPost = async (req, res) => {
   try {
@@ -10,7 +11,7 @@ export const createPost = async (req, res) => {
     
     let attachment = "";
     if (req.file) {
-      attachment = req.file.path.replace(/\\/g, "/");
+      attachment = await uploadToCloudinary(req.file, "broadcast");
     }
 
     const newPost = new BroadcastPost({

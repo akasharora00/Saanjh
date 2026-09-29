@@ -1,4 +1,6 @@
 import LostFound from "../models/LostFound.js";
+import { uploadToCloudinary } from "../utils/cloudinaryService.js";
+
 
 // @desc    Create a lost/found report
 // @route   POST /api/lost-found
@@ -16,7 +18,7 @@ export const createReport = async (req, res) => {
 
     let images = [];
     if (req.files && req.files.length > 0) {
-      images = req.files.map((file) => file.path.replace(/\\/g, "/"));
+      images = await uploadToCloudinary(req.files, "lost-found");
     }
 
     const report = await LostFound.create({
@@ -158,7 +160,7 @@ export const updateReport = async (req, res) => {
     report.phone = phone !== undefined ? phone : report.phone;
 
     if (req.files && req.files.length > 0) {
-      report.images = req.files.map((file) => file.path.replace(/\\/g, "/"));
+      report.images = await uploadToCloudinary(req.files, "lost-found");
     }
 
     await report.save();

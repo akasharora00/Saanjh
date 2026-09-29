@@ -1,4 +1,6 @@
 import Event from "../models/Event.js";
+import { uploadToCloudinary } from "../utils/cloudinaryService.js";
+
 export const createEvent = async (req, res) => {
   try {
     const {
@@ -13,8 +15,8 @@ export const createEvent = async (req, res) => {
       maxParticipants,
     } = req.body;
 
-    const poster = req.files && req.files["poster"] ? req.files["poster"][0].path : "";
-    const circular = req.files && req.files["circular"] ? req.files["circular"][0].path : "";
+    const poster = req.files && req.files["poster"] ? await uploadToCloudinary(req.files["poster"][0], "events") : "";
+    const circular = req.files && req.files["circular"] ? await uploadToCloudinary(req.files["circular"][0], "events") : "";
 
     const event = await Event.create({
       title,

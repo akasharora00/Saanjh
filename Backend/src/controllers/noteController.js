@@ -1,4 +1,5 @@
 import Note from "../models/Note.js";
+import { uploadToCloudinary } from "../utils/cloudinaryService.js";
 
 export const uploadNote = async (req, res) => {
   try {
@@ -17,13 +18,15 @@ export const uploadNote = async (req, res) => {
       });
     }
 
+    const fileUrl = await uploadToCloudinary(req.file, "notes");
+
     const note = await Note.create({
       title,
       subject,
       department,
       semester,
       description,
-      fileUrl: req.file.path.replace(/\\/g, "/"),
+      fileUrl,
       uploadedBy: req.user._id,
     });
 

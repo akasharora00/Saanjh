@@ -3,6 +3,8 @@ import generateToken from "../utils/generateToken.js";
 import User from "../models/User.js";
 import generateOTP from "../utils/generateOTP.js";
 import { sendOTPEmail, sendFacultyCredentialsEmail } from "../services/emailService.js";
+import { uploadToCloudinary } from "../utils/cloudinaryService.js";
+
 
 export const sendOTP = async (req, res) => {
   try {
@@ -521,7 +523,7 @@ export const updateProfile = async (req, res) => {
 
     // Save profile picture file url if present
     if (req.file) {
-      user.profilePic = req.file.path.replace(/\\/g, "/");
+      user.profilePic = await uploadToCloudinary(req.file, "profiles");
     }
 
     await user.save();
