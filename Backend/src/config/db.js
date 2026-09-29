@@ -1,3 +1,13 @@
+/**
+ * Purpose:
+ * Database configuration and initial connection module for UniSphere.
+ * 
+ * Responsibilities:
+ * - Establishes Mongoose connection with MongoDB Atlas SRV URI with automatic local fallback.
+ * - Enforces IPv4 DNS resolution family to prevent ECONNRESET errors.
+ * - Seeds default Administrator account if none exists in the database.
+ */
+
 import mongoose from "mongoose";
 import User from "../models/User.js";
 
@@ -27,6 +37,10 @@ const seedAdmin = async () => {
 };
 
 const connectDB = async () => {
+    if (mongoose.connection.readyState >= 1) {
+        return;
+    }
+
     const options = {
         serverSelectionTimeoutMS: 5000,
         socketTimeoutMS: 45000,

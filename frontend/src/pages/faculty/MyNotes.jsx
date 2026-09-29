@@ -4,6 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 import { Search, Filter, Trash2, Calendar, BookOpen, Inbox, ExternalLink, Pencil, X, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DEPARTMENTS } from "../../constants/departments";
+import { getAssetUrl } from "../../utils/url";
+
 
 const MyNotes = () => {
   const { user } = useAuth();
@@ -245,7 +247,7 @@ const MyNotes = () => {
 
                 <div className="flex items-center gap-3 mt-6 pt-4 border-t border-slate-855">
                   <a
-                    href={`http://localhost:5000/${note.fileUrl}`}
+                    href={getAssetUrl(note.fileUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 inline-flex items-center justify-center gap-2 border border-slate-800 hover:bg-slate-900/60 hover:border-slate-750 text-slate-300 py-3 rounded-2xl font-bold transition text-sm cursor-pointer"

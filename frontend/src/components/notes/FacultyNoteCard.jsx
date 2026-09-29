@@ -1,3 +1,5 @@
+import { getAssetUrl } from "../../utils/url";
+
 const FacultyNoteCard = ({ note, onDelete }) => {
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
@@ -27,7 +29,7 @@ const FacultyNoteCard = ({ note, onDelete }) => {
       <div className="flex gap-3 mt-5">
 
         <a
-          href={`http://localhost:5000/${note.fileUrl}`}
+          href={getAssetUrl(note.fileUrl)}
           target="_blank"
           rel="noreferrer"
           className="bg-violet-600 text-white px-4 py-2 rounded-lg"

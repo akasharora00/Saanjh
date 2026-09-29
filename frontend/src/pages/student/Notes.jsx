@@ -72,12 +72,12 @@ const Notes = () => {
         </div>
 
         {/* Filters */}
-        <div className="flex gap-4">
-          <div className="relative">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1 sm:flex-none">
             <select
               value={selectedSemester}
               onChange={(e) => setSelectedSemester(e.target.value)}
-              className="bg-slate-900 border border-slate-800 rounded-2xl pl-4 pr-10 py-3 text-slate-300 outline-none focus:border-blue-500 transition text-sm font-semibold appearance-none cursor-pointer min-w-[150px]"
+              className="w-full bg-slate-900 border border-slate-800 rounded-2xl pl-4 pr-10 py-3 text-slate-300 outline-none focus:border-blue-500 transition text-sm font-semibold appearance-none cursor-pointer sm:min-w-[150px]"
             >
               <option value="" className="bg-[#0F172A]">All Semesters</option>
               {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
@@ -90,11 +90,11 @@ const Notes = () => {
           </div>
 
           {/* Subject Filter */}
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <select
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
-              className="bg-slate-900 border border-slate-800 rounded-2xl pl-4 pr-10 py-3 text-slate-300 outline-none focus:border-blue-500 transition text-sm font-semibold appearance-none cursor-pointer min-w-[150px]"
+              className="w-full bg-slate-900 border border-slate-800 rounded-2xl pl-4 pr-10 py-3 text-slate-300 outline-none focus:border-blue-500 transition text-sm font-semibold appearance-none cursor-pointer sm:min-w-[150px]"
             >
               <option value="" className="bg-[#0F172A]">All Subjects</option>
               {subjects.map((sub) => (

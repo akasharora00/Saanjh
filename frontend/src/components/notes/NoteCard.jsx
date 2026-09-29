@@ -1,5 +1,6 @@
 import React from "react";
 import { BookOpen, Calendar, Folder, GraduationCap, User, Download } from "lucide-react";
+import { getAssetUrl } from "../../utils/url";
 
 const NoteCard = ({ note }) => {
   const uploadDate = note.createdAt
@@ -61,7 +62,7 @@ const NoteCard = ({ note }) => {
 
         {/* Download Action */}
         <a
-          href={`http://localhost:5000/${note.fileUrl}`}
+          href={getAssetUrl(note.fileUrl)}
           target="_blank"
           rel="noopener noreferrer"
           download

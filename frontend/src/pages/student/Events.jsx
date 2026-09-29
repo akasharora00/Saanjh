@@ -3,6 +3,8 @@ import { Calendar, MapPin, Clock, Search, Filter, Compass, Users, Download, Aler
 import { motion } from "framer-motion";
 import { getAllEvents, registerForEvent, cancelRegistration } from "../../api/eventApi";
 import { useAuth } from "../../context/AuthContext";
+import { getAssetUrl } from "../../utils/url";
+
 
 const Events = () => {
   const { user } = useAuth();
@@ -51,8 +53,7 @@ const Events = () => {
 
   const getFileUrl = (url) => {
     if (!url) return "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600";
-    if (url.startsWith("http://") || url.startsWith("https://")) return url;
-    return `http://localhost:5000/${url.replace(/\\/g, "/")}`;
+    return getAssetUrl(url);
   };
 
   // Filter lists dynamically - visible to ALL students
@@ -98,13 +99,13 @@ const Events = () => {
           />
         </div>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           {/* Category */}
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="bg-slate-900 border border-slate-800 rounded-2xl pl-4 pr-10 py-3 text-slate-300 outline-none focus:border-blue-500 transition text-sm font-semibold appearance-none cursor-pointer min-w-[140px]"
+              className="w-full bg-slate-900 border border-slate-800 rounded-2xl pl-4 pr-10 py-3 text-slate-300 outline-none focus:border-blue-500 transition text-sm font-semibold appearance-none cursor-pointer sm:min-w-[140px]"
             >
               <option value="" className="bg-[#0F172A]">All Categories</option>
               {categories.map((cat) => (
@@ -117,11 +118,11 @@ const Events = () => {
           </div>
 
           {/* Department - Strict Four Departments */}
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <select
               value={deptFilter}
               onChange={(e) => setDeptFilter(e.target.value)}
-              className="bg-slate-900 border border-slate-800 rounded-2xl pl-4 pr-10 py-3 text-slate-300 outline-none focus:border-blue-500 transition text-sm font-semibold appearance-none cursor-pointer min-w-[180px]"
+              className="w-full bg-slate-900 border border-slate-800 rounded-2xl pl-4 pr-10 py-3 text-slate-300 outline-none focus:border-blue-500 transition text-sm font-semibold appearance-none cursor-pointer sm:min-w-[180px]"
             >
               <option value="" className="bg-[#0F172A]">All Departments</option>
               <option value="CSE" className="bg-[#0F172A]">CSE</option>

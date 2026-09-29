@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Calendar, MapPin, Phone, Mail, ShieldAlert, CheckCircle, Trash2, Tag, AlertCircle } from "lucide-react";
 import { getReportById, claimItem, resolveReport, deleteReport } from "../../api/lostFoundApi";
 import { useAuth } from "../../context/AuthContext";
+import { getAssetUrl } from "../../utils/url";
+
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -80,8 +82,7 @@ const ItemDetails = () => {
 
   const getFileUrl = (url) => {
     if (!url) return "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?w=900";
-    if (url.startsWith("http://") || url.startsWith("https://")) return url;
-    return `http://localhost:5000/${url.replace(/\\/g, "/")}`;
+    return getAssetUrl(url);
   };
 
   if (loading) {
@@ -234,7 +235,7 @@ const ItemDetails = () => {
             <div className="flex items-center gap-4">
               {item.owner?.profilePic ? (
                 <img
-                  src={`http://localhost:5000/${item.owner.profilePic}`}
+                  src={getAssetUrl(item.owner.profilePic)}
                   alt="Reporter avatar"
                   className="w-11 h-11 rounded-2xl object-cover border border-slate-800"
                 />

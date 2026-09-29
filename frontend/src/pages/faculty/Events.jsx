@@ -3,6 +3,8 @@ import { MapPin, Search, Filter, Plus, X, Download, FileText, Upload, Users, Tra
 import { motion, AnimatePresence } from "framer-motion";
 import { getAllEvents, createEvent, deleteEvent, getRegisteredStudents } from "../../api/eventApi";
 import { useAuth } from "../../context/AuthContext";
+import { getAssetUrl } from "../../utils/url";
+
 
 const PREDEFINED_CATEGORIES = [
   "Workshop", "Seminar", "Webinar", "Hackathon", "Competition", "Coding Contest",
@@ -234,8 +236,7 @@ const FacultyEvents = () => {
 
   const getFileUrl = (url) => {
     if (!url) return "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600";
-    if (url.startsWith("http://") || url.startsWith("https://")) return url;
-    return `http://localhost:5000/${url.replace(/\\/g, "/")}`;
+    return getAssetUrl(url);
   };
 
   // Filter list dynamically

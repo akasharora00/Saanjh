@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { updateProfile } from "../../api/authApi";
 import { User, Mail, GraduationCap, Folder, Phone, Shield, Camera, Pencil, CheckCircle2, AlertCircle, Save, X, Lock } from "lucide-react";
+import { getAssetUrl } from "../../utils/url";
+
 
 const Profile = () => {
   const { user, setUser } = useAuth();
@@ -137,10 +139,10 @@ const Profile = () => {
   return (
     <div className="max-w-3xl mx-auto space-y-8 animate-fadeIn text-slate-100 font-sans">
       {/* Title */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">My Profile</h1>
-          <p className="text-slate-400 mt-1">Manage your account information and academic details.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">My Profile</h1>
+          <p className="text-slate-400 mt-1 text-sm">Manage your account information and academic details.</p>
         </div>
         <button
           onClick={handleEditToggle}
@@ -185,7 +187,7 @@ const Profile = () => {
                   {profilePicPreview ? (
                     <img src={profilePicPreview} alt="Preview" className="w-full h-full object-cover" />
                   ) : user?.profilePic ? (
-                    <img src={`http://localhost:5000/${user.profilePic}`} alt="Profile" className="w-full h-full object-cover" />
+                    <img src={getAssetUrl(user.profilePic)} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
                     user?.name ? user.name[0].toUpperCase() : "U"
                   )}
@@ -322,7 +324,7 @@ const Profile = () => {
             {/* Avatar Icon */}
             <div className="w-20 h-20 rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden flex items-center justify-center font-extrabold text-3xl shadow-inner select-none shrink-0 border border-blue-500/10">
               {user?.profilePic ? (
-                <img src={`http://localhost:5000/${user.profilePic}`} alt="Profile" className="w-full h-full object-cover" />
+                <img src={getAssetUrl(user.profilePic)} alt="Profile" className="w-full h-full object-cover" />
               ) : (
                 user?.name ? user.name[0].toUpperCase() : "U"
               )}

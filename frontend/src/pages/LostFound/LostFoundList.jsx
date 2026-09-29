@@ -4,6 +4,8 @@ import { Search, Calendar, MapPin, Tag, Plus, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { getAllReports } from "../../api/lostFoundApi";
 import { useAuth } from "../../context/AuthContext";
+import { getAssetUrl } from "../../utils/url";
+
 
 const LostFoundList = () => {
   const { user } = useAuth();
@@ -76,8 +78,7 @@ const LostFoundList = () => {
 
   const getFileUrl = (url) => {
     if (!url) return "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?w=600";
-    if (url.startsWith("http://") || url.startsWith("https://")) return url;
-    return `http://localhost:5000/${url.replace(/\\/g, "/")}`;
+    return getAssetUrl(url);
   };
 
   const filteredReports = reports.filter((item) => {
@@ -125,12 +126,12 @@ const LostFoundList = () => {
       )}
 
       {/* Tabs Menu */}
-      <div className="flex border-b border-slate-800 gap-6">
+      <div className="flex border-b border-slate-800 gap-4 sm:gap-6 overflow-x-auto scrollbar-none">
         {["all", "lost", "found", "resolved"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`pb-4 text-xs font-extrabold uppercase tracking-wider transition-all duration-200 cursor-pointer relative ${
+            className={`pb-4 text-xs font-extrabold uppercase tracking-wider transition-all duration-200 cursor-pointer relative shrink-0 ${
               activeTab === tab
                 ? "text-blue-500 font-bold border-b-2 border-blue-500"
                 : "text-slate-450 hover:text-slate-200"
@@ -156,7 +157,7 @@ const LostFoundList = () => {
         </div>
 
         {/* Dropdown Filters */}
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}

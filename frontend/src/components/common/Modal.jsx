@@ -20,7 +20,7 @@ const Modal = ({ isOpen, onClose, title, children, maxWidth = "max-w-md" }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className={`relative z-10 w-full ${maxWidth} bg-slate-900 border border-slate-800 rounded-[30px] p-6 sm:p-8 shadow-2xl space-y-6 overflow-hidden`}
+            className={`relative z-10 w-full ${maxWidth} bg-slate-900 border border-slate-800 rounded-[24px] sm:rounded-[30px] p-5 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto`}
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">

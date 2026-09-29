@@ -154,11 +154,14 @@ export const register = async (req, res) => {
 
     const token = generateToken(user._id);
 
-    res.cookie("token", token, {
+    const isProd = process.env.NODE_ENV === "production";
+    const cookieOptions = {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-    });
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
+    };
+
+    res.cookie("token", token, cookieOptions);
 
     const userObj = user.toObject();
     delete userObj.password;
@@ -213,11 +216,14 @@ export const loginUser = async (req, res) => {
 
     const token = generateToken(user._id);
 
-    res.cookie("token", token, {
+    const isProd = process.env.NODE_ENV === "production";
+    const cookieOptions = {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-    });
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
+    };
+
+    res.cookie("token", token, cookieOptions);
 
     const userObj = user.toObject();
     delete userObj.password;
@@ -248,11 +254,14 @@ export const getCurrentUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
   try {
-    res.clearCookie("token", {
+    const isProd = process.env.NODE_ENV === "production";
+    const cookieOptions = {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-    });
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
+    };
+
+    res.clearCookie("token", cookieOptions);
 
     return res.status(200).json({
       message: "Logout Successful",

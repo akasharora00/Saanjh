@@ -20,7 +20,7 @@ const Hero = () => {
             Now live at 12+ campuses
           </span>
 
-          <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.1] mt-8">
+          <h1 className="text-3xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.1] mt-8">
             Connecting Campus,
             <br />
             <span className="bg-gradient-to-r from-blue-400 via-blue-500 to-violet-500 bg-clip-text text-transparent">

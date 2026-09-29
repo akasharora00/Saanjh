@@ -1,3 +1,14 @@
+/**
+ * Purpose:
+ * Entry point for the UniSphere backend Node.js server.
+ * 
+ * Responsibilities:
+ * - Loads environment variables from dotenv.
+ * - Configures Node.js DNS resolution order (IPv4 first) for MongoDB Atlas SRV compatibility.
+ * - Establishes MongoDB database connection via connectDB().
+ * - Starts Express HTTP server listening on configured PORT (default: 5000).
+ */
+
 import "dotenv/config";
 import dns from "node:dns";
 import app from "./app.js";

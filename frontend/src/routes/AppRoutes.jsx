@@ -34,6 +34,9 @@ import LostFoundList from "../pages/LostFound/LostFoundList";
 import ReportItem from "../pages/LostFound/ReportItem";
 import ItemDetails from "../pages/LostFound/ItemDetails";
 
+import Broadcast from "../pages/student/Broadcast";
+import BroadcastPost from "../pages/student/BroadcastPost";
+
 import PageTransition from "../components/common/PageTransition";
 
 const AppRoutes = () => {
@@ -97,6 +100,8 @@ const AppRoutes = () => {
         }
       >
         <Route index element={<PageTransition><StudentDashboard /></PageTransition>} />
+        <Route path="broadcast" element={<PageTransition><Broadcast /></PageTransition>} />
+        <Route path="broadcast/:id" element={<PageTransition><BroadcastPost /></PageTransition>} />
         <Route path="notes" element={<PageTransition><Notes /></PageTransition>} />
         <Route path="events" element={<PageTransition><Events /></PageTransition>} />
         <Route path="lost-found" element={<PageTransition><LostFoundList /></PageTransition>} />

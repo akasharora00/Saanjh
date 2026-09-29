@@ -58,16 +58,16 @@ const StudentDashboard = () => {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative overflow-hidden rounded-[30px] bg-gradient-to-tr from-blue-700 via-blue-600 to-violet-600 text-white p-8 md:p-12 shadow-xl shadow-blue-500/10 border border-white/10"
+        className="relative overflow-hidden rounded-[24px] sm:rounded-[30px] bg-gradient-to-tr from-blue-700 via-blue-600 to-violet-600 text-white p-6 sm:p-8 md:p-12 shadow-xl shadow-blue-500/10 border border-white/10"
       >
         <div className="absolute -right-16 -top-16 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-purple-300/10 rounded-full blur-3xl pointer-events-none"></div>
         
         <div className="relative z-10 max-w-2xl">
-          <span className="inline-flex bg-white/15 text-white text-[10px] font-extrabold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5 border border-white/10">
+          <span className="inline-flex bg-white/15 text-white text-[10px] font-extrabold uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 sm:mb-5 border border-white/10">
             Student Portal
           </span>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
             Welcome back, <br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200">{user?.name || "Student"}</span> 👋
           </h1>

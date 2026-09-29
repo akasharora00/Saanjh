@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { updateProfile } from "../../api/authApi";
 import { User, Mail, Folder, Phone, Shield, Camera, Pencil, CheckCircle2, AlertCircle, Save, X, Lock } from "lucide-react";
+import { getAssetUrl } from "../../utils/url";
+
 
 const Profile = () => {
   const { user, setUser } = useAuth();
@@ -181,7 +183,7 @@ const Profile = () => {
                   {profilePicPreview ? (
                     <img src={profilePicPreview} alt="Preview" className="w-full h-full object-cover" />
                   ) : user?.profilePic ? (
-                    <img src={`http://localhost:5000/${user.profilePic}`} alt="Profile" className="w-full h-full object-cover" />
+                    <img src={getAssetUrl(user.profilePic)} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
                     user?.name ? user.name[0].toUpperCase() : "U"
                   )}
@@ -311,7 +313,7 @@ const Profile = () => {
             {/* Avatar Icon */}
             <div className="w-20 h-20 rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden flex items-center justify-center font-extrabold text-3xl shadow-inner select-none shrink-0 border border-blue-500/10">
               {user?.profilePic ? (
-                <img src={`http://localhost:5000/${user.profilePic}`} alt="Profile" className="w-full h-full object-cover" />
+                <img src={getAssetUrl(user.profilePic)} alt="Profile" className="w-full h-full object-cover" />
               ) : (
                 user?.name ? user.name[0].toUpperCase() : "U"
               )}

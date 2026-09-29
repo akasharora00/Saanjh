@@ -1,14 +1,11 @@
 import multer from "multer";
 import path from "path";
-import fs from "fs";
+import { getUploadDestination } from "../utils/uploadHelper.js";
 
 // Storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = "uploads/events/";
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
+    const uploadDir = getUploadDestination("events");
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {

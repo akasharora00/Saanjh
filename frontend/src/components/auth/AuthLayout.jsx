@@ -68,13 +68,13 @@ const AuthLayout = ({ title, subtitle, children }) => {
       </div>
 
       {/* RIGHT PANEL - FLOATING CARD */}
-      <div className="flex items-center justify-center p-6 md:p-12 relative z-10">
-        <div className="w-full max-w-lg glass-card rounded-[32px] border border-slate-800 p-8 md:p-10 shadow-2xl relative overflow-hidden">
+      <div className="flex items-center justify-center p-4 sm:p-6 md:p-12 relative z-10">
+        <div className="w-full max-w-lg glass-card rounded-[24px] sm:rounded-[32px] border border-slate-800 p-5 sm:p-8 md:p-10 shadow-2xl relative overflow-hidden">
           {/* Card inner subtle glow */}
           <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl pointer-events-none"></div>
           
           <div className="relative z-10">
-            <h1 className="text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
               {title}
             </h1>
             <p className="text-slate-400 text-sm mt-2 mb-8">
