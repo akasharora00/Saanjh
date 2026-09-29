@@ -2,17 +2,6 @@ import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 
 /**
- * Configure Cloudinary from process.env if available
- */
-if (process.env.CLOUDINARY_CLOUD_NAME) {
-  cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
-}
-
-/**
  * Uploads a single file or array of files to Cloudinary if configured.
  * Falls back seamlessly to local relative path if Cloudinary env vars are omitted.
  *
@@ -28,10 +17,22 @@ export const uploadToCloudinary = async (fileOrFiles, folder = "general") => {
 
     const localPath = file.path ? file.path.replace(/\\/g, "/") : "";
 
-    // If Cloudinary keys are not provided in environment variables, use local path
-    if (!process.env.CLOUDINARY_CLOUD_NAME) {
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = process.env.CLOUDINARY_API_KEY;
+    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+    // If Cloudinary keys are missing in environment variables, fallback to local path
+    if (!cloudName || !apiKey || !apiSecret) {
+      console.warn(`[Cloudinary Notice]: Missing Cloudinary env variables. Storing local path: ${localPath}`);
       return localPath;
     }
+
+    // Configure Cloudinary dynamically on every invocation
+    cloudinary.config({
+      cloud_name: cloudName,
+      api_key: apiKey,
+      api_secret: apiSecret,
+    });
 
     try {
       const isPdf = file.mimetype === "application/pdf" || file.originalname?.endsWith(".pdf");
